@@ -6,7 +6,7 @@
     "start": "node server.js",
     "webpack-watch": "webpack -w",
     "express-server": "node ./server",
-    "dev": "concurrent --kill-others \"npm run webpack-watch\" \"npm run express-server\"",
+    "dev": "concurrently --kill-others \"./node_modules/webpack/bin/webpack.js -w\" \"npm run express-server\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
