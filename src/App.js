@@ -1,8 +1,25 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { render } from 'react-dom';
 import Welcome from './component/index';
+import { Provider } from 'react-redux';
+import createStore from './store';
 
-ReactDOM.render(
-    <Welcome name="User !!."/>,
-    document.getElementById('root')
-);
+const store = createStore();
+
+class App extends React.Component {
+
+    render() {
+        return (
+            <Provider store={store}>
+                 <Welcome />
+            </Provider>
+        )
+    }
+
+}
+
+render(<App />,document.getElementById('root'));
+
+
+
+
