@@ -1,12 +1,14 @@
 /**
  * Created by ashishmishra on 5/8/17.
  */
-import { createStore, compose, applyMiddleware } from 'redux';
+import { createStore, compose, applyMiddleware, combineReducers } from 'redux';
 
 
 // reducer
-import items from './reducer';
 
-export default function configureStore() {
-    return createStore(items);
+import reducer from './reducers';
+
+export default function configureStore(reducerX = reducer,initState) {
+    const store = createStore(reducerX,initState);
+    return store;
 }

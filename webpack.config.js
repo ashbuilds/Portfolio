@@ -1,11 +1,10 @@
+
+
 webpack = require('webpack');
+var path = require('path');
 
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 
-const extractLess = new ExtractTextPlugin({
-    filename: "[name].[contenthash].css",
-    disable: process.env.NODE_ENV === "development"
-});
 
 module.exports = {
     entry: './src/App.js',
@@ -17,31 +16,38 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /\.js$/,
+                test:/\.(?:js|jsx)$/,
                 exclude: /node_modules/,
                 use: 'babel-loader'
             },
             {
-                test: /\.jsx$/,
-                exclude: /node_modules/,
-                use: 'babel-loader'
-            },
-            {
-                test: /\.less$/,
-                use: [{
-                    loader: "style-loader?localIdentName=[name]__[local]__[hash:base64:7]" // creates style nodes from JS strings
-                }, {
-                    loader: "css-loader?localIdentName=[name]__[local]__[hash:base64:7]" // translates CSS into CommonJS
-                }, {
-                    loader: "less-loader?localIdentName=[name]__[local]__[hash:base64:7]" // compiles Less to CSS
-                }]
-            },
+                test: /\.(?:css|less)$/,
+                loader: ExtractTextPlugin.extract({
+                    fallbackLoader: 'style-loader',
+                    loader: 'css-loader?module&localIdentName=[name]__[local]__[hash:base64:7]!less-loader?module&localIdentName=[name]__[local]__[hash:base64:7]'
+                })
+            }
         ]
     },
     plugins: [
-        extractLess
+        new ExtractTextPlugin({
+            filename: 'bundle.css',
+            allChunks: true,
+        }),
+        new webpack.DefinePlugin({
+            "process.env": {
+
+                // Mainly used to require CSS files with webpack, which can happen only on browser
+                // Used as `if (process.env.BROWSER)...`
+                BROWSER: JSON.stringify(true),
+
+                // Useful to reduce the size of client-side libraries, e.g. react
+                NODE_ENV: JSON.stringify("production")
+
+            }
+        }),
     ],
     resolve: {
-        extensions: ['.jsx', '.js', '.json']
+        extensions: ['.less','.jsx', '.js', '.json']
     }
 };
