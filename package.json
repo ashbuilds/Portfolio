@@ -3,14 +3,16 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node server.js",
+    "start": "webpack && babel-node server.js",
     "webpack-watch": "webpack -w",
     "express-server": "node ./server",
-    "dev": "concurrently --kill-others \"./node_modules/webpack/bin/webpack.js -w\" \"npm run express-server\"",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "concurrently --kill-others \"./node_modules/webpack/bin/webpack.js -w\" \"npm run express-server\""
   },
   "dependencies": {
     "axios": "^0.16.1",
+    "babel-cli": "^6.24.1",
+    "babel-core": "^6.24.1",
     "babel-loader": "^7.0.0",
     "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-plugin-transform-runtime": "^6.23.0",
@@ -35,7 +37,8 @@
     "react-router-redux": "^4.0.8",
     "redux": "^3.6.0",
     "style-loader": "^0.17.0",
-    "webpack": "^2.5.1"
+    "webpack": "^2.5.1",
+    "webpack-node-externals": "^1.6.0"
   },
   "devDependencies": {
     "concurrently": "^3.4.0"
