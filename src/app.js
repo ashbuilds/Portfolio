@@ -1,16 +1,15 @@
 import React from 'react';
-import {render} from 'react-dom';
-import {renderToString} from 'react-dom/server'
 import {Provider} from 'react-redux';
-import {Router, Route, browserHistory, RouterContext, match, createMemoryHistory} from 'react-router'
-import {createStore} from 'redux'
-import {syncHistoryWithStore} from 'react-router-redux'
+import {Router, Route, browserHistory, RouterContext, match, createMemoryHistory} from 'react-router';
+import {render} from 'react-dom';
+import {renderToString} from 'react-dom/server';
+import {syncHistoryWithStore} from 'react-router-redux';
 
-import reducerApp from './reducers';
-import createStoreReact from './store';
-import list from './testData';                  //TEMP DATA
 import {Home} from './containers/index';
+import reducerApp from './reducers';
+import createStore from './store';
 
+import list from './testData';                  //TEMP DATA
 
 const App = (store,history) => (
     <Provider store={store}>
@@ -22,11 +21,11 @@ const App = (store,history) => (
 
 if ( typeof window !== 'undefined') {
 
-    let initStore = window.__INIT_STATE__ || {};
-    let store = createStoreReact(undefined, initStore);
+    let initStore = window.__INITIAL_STATE__ || {};
+    let store = createStore(undefined, initStore);
     const history = syncHistoryWithStore(browserHistory, store);
 
-    delete window.__INIT_STATE__;               //Remove data and tag for security reasons
+    delete window.__INITIAL_STATE__;               //Remove data and tag for security reasons
     document.getElementById("__DELETE_AFTER_RENDER__").remove();
 
     render(App(store,history), document.getElementById('root'));
