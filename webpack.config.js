@@ -2,13 +2,11 @@
 
 const webpack = require('webpack');
 const path = require('path');
-const context = path.resolve(__dirname, 'src');
 const nodeExternals = require('webpack-node-externals');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 const config = {
     name:"client",
-    context,
     entry: './App.js',
     output: {
         path: __dirname+"/.build/assets",
