@@ -9,6 +9,5 @@ import { createStore, compose, applyMiddleware, combineReducers } from 'redux';
 import reducer from './reducers';
 
 export default function configureStore(reducerX = reducer,initState) {
-    const store = createStore(reducerX,initState);
-    return store;
+    return  createStore(reducerX,initState);
 }

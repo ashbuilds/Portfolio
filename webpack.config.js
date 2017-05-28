@@ -2,14 +2,18 @@
 
 const webpack = require('webpack');
 const path = require('path');
-const context = path.resolve(__dirname, 'src');
-const nodeExternals = require('webpack-node-externals');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 
+const themeDark = {
+    "baseColor": "#242a3b",
+    "baseText": "#ffffff",
+    "baseShade": "#191c28",
+    "primaryColor": "#4BAB86"
+};
+
 const config = {
-    name:"client",
-    context,
-    entry: './App.js',
+    name:"TheAsia",
+    entry: __dirname+'/src/app.js',
     output: {
         path: __dirname+"/.build/assets",
         filename: 'bundle.js'
@@ -23,12 +27,41 @@ const config = {
                 use: 'babel-loader',
             },
             {
-                test: /\.(?:css|less)$/,
+                test:/\.(?:css|less)$/,///(?!.*\.dark\.less$)^.+\.(?:css|less)$/,
                 use: ExtractTextPlugin.extract({
-                    loader: ['css-loader?importLoader=1&sourceMap&module&localIdentName=[name]__[local]__[hash:base64:7]','less-loader?importLoader=1&sourceMap&module&localIdentName=[name]__[local]__[hash:base64:7]'],
-                    fallback: 'style-loader'
-                })
-            }
+                    use: [
+                        {
+                            loader: 'css-loader?modules',
+                            options: {
+                                sourceMap: true,
+                                importLoader: true,
+                                localIdentName:'[name]__[local]__[hash:base64:7]'
+                            }
+                        },
+                        {
+                            loader: 'less-loader',
+                            options: {
+                                sourceMap: true,
+                                importLoader: true,
+                            }
+                        }
+                    ],
+                    fallback: 'style-loader',
+                }),
+                exclude: /\.(eot|woff|woff2|ttf|svg|jpe?g|png|gif)(\?[\s\S]+)?$/
+            },
+            {
+                test: /\.(eot|woff|woff2|ttf|svg)(\?[\s\S]+)?$/,
+                loader: 'url-loader?limit=1000&name=./fonts/[name].[ext]?[hash:base64:5]#icomoon',
+                exclude:/\.(jpe?g|png|gif)$/i
+            },
+            // {
+            //     test: /\.(jpe?g|png|gif|svg)$/i,
+            //     loaders: [
+            //         'file-loader?hash=sha512&digest=hex&name=[hash].[ext]',
+            //         'image-webpack-loader?bypassOnDebug&optimizationLevel=7&interlaced=false'
+            //     ]
+            // }
         ]
     },
     plugins: [
@@ -38,59 +71,102 @@ const config = {
         }),
         new webpack.DefinePlugin({
             "process.env": {
-                // Mainly used to require CSS files with webpack, which can happen only on browser
-                // Used as `if (process.env.BROWSER)...`
                 BROWSER: JSON.stringify(true),
-
-                // Useful to reduce the size of client-side libraries, e.g. react
                 NODE_ENV: JSON.stringify("production")
-
             }
-        }),
+        })
     ],
     resolve: {
-        extensions: ['.jsx', '.js', '.json']
+        extensions: ['.jsx', '.js', '.json','.less']
     }
 };
 
+
+const nodeExternals = require('webpack-node-externals');
+
+
 const serverConfig = {
-    name: 'server',
+    name: 'TheAsia',
     target: 'node',
     externals: [nodeExternals()],
     entry: [
-        './index.js'
+        __dirname+'/index.js'
     ],
     output: {
-        path: path.join(__dirname, './.build'),
+        path: path.join(__dirname, '/.build'),
         filename: 'server.build.js',
-        publicPath: '.build/',
+        publicPath: './',
         libraryTarget: 'commonjs2'
     },
     module: {
-        loaders: [
+        rules: [
             {
                 test:/\.(?:js|jsx)$/,
                 exclude: /node_modules/,
                 use: 'babel-loader',
             },
             {
-                test: /\.(?:css|less)$/,
-                use: 'css-loader/locals?modules&importLoaders=1&localIdentName=[name]__[local]__[hash:base64:7]'
-            }
+                test:/\.(?:css|less)$/,
+                use: ExtractTextPlugin.extract({
+                    use: [
+                        {
+                            loader: 'css-loader?locals',
+                            options: {
+                                sourceMap: false,
+                                localIdentName:'[name]__[local]__[hash:base64:7]'
+                            }
+                        },
+                        {
+                            loader: 'less-loader',
+                            options: {
+                                sourceMap: false,
+                                modifyVars:themeDark
+                            }
+                        }
+                    ],
+                    fallback: 'style-loader',
+                }),
+                exclude: /\.(eot|woff|woff2|ttf|svg|jpe?g|png|gif)(\?[\s\S]+)?$/
+            },
+            {
+                test: /\.(eot|woff|woff2|ttf|svg)(\?[\s\S]+)?$/,
+                loader: 'url-loader?limit=1000&name=fonts/[name].[ext]?[hash:base64:5]#icomoon',
+                exclude:/\.(jpe?g|png|gif)$/i
+            },
+            // {
+            //     test: /\.(jpe?g|png|gif|svg)$/i,
+            //     loaders: [
+            //         'file-loader?hash=sha512&digest=hex&name=[hash].[ext]',
+            //         'image-webpack-loader?bypassOnDebug&optimizationLevel=7&interlaced=false'
+            //     ]
+            // }
         ]
     },
+    plugins: [
+        new ExtractTextPlugin({
+            filename: 'assets/bundle.dark.css',
+            allChunks: true,
+        }),
+        new webpack.DefinePlugin({
+        "process.env": {
+            BROWSER: JSON.stringify(true),
+            NODE_ENV: JSON.stringify("production")
+        }
+    }),
+    ],
     resolve: {
         extensions: ['.jsx', '.js', '.json','.less']
     }
 };
 
-module.exports = [config, serverConfig];
 
+module.exports = [serverConfig,config];
 
-/*
-
- {
- fallbackLoader: 'style-loader',
- loader: ['css-loader?sourceMap&module&localIdentName=[name]__[local]__[hash:base64:7]','less-loader?sourceMap&module&localIdentName=[name]__[local]__[hash:base64:7]'],
- }
-* */
+// plugins: [
+//     new webpack.DefinePlugin({
+//         "process.env": {
+//             BROWSER: JSON.stringify(true),
+//             NODE_ENV: JSON.stringify("production")
+//         }
+//     }),
+// ],
