@@ -19,7 +19,7 @@ function renderFullPage(html, preloadedState) {
     <!doctype html>
     <html>
       <head>
-        <title>The Asia</title>
+        <title>Portfolio</title>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
         <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgo=">  
         <link id="__BUNDLED__STYLE" rel="stylesheet" href="./assets/normalize.css"/>

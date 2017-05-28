@@ -12,7 +12,7 @@ const themeDark = {
 };
 
 const config = {
-    name:"TheAsia",
+    name:"Portfolio",
     entry: __dirname+'/src/app.js',
     output: {
         path: __dirname+"/.build/assets",
@@ -86,7 +86,7 @@ const nodeExternals = require('webpack-node-externals');
 
 
 const serverConfig = {
-    name: 'TheAsia',
+    name: 'Portfolio',
     target: 'node',
     externals: [nodeExternals()],
     entry: [
@@ -146,13 +146,7 @@ const serverConfig = {
         new ExtractTextPlugin({
             filename: 'assets/bundle.dark.css',
             allChunks: true,
-        }),
-        new webpack.DefinePlugin({
-        "process.env": {
-            BROWSER: JSON.stringify(true),
-            NODE_ENV: JSON.stringify("production")
-        }
-    }),
+        })
     ],
     resolve: {
         extensions: ['.jsx', '.js', '.json','.less']
