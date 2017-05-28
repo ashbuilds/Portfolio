@@ -2,7 +2,7 @@
  * Created by ashishmishra on 5/8/17.
  */
 import { combineReducers } from 'redux';
-import { routerReducer } from 'react-router-redux'
+import { routerReducer } from 'react-router-redux';
 
 
 
@@ -15,7 +15,7 @@ const items = function(state={list:[]},action = {}) {
             let newState =  state.list.concat([action.value]);
             return Object.assign({}, state, {list:newState});
         case 'GET_ITEMS':
-            return state
+            return state;
         default:
             return state;
     }

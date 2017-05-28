@@ -1,0 +1,77 @@
+
+
+@import "../definition.less";
+
+:local(.header){
+
+  background-color: @baseColor;
+  color: @baseText;
+
+  width:100%;
+  position: fixed;
+  top:0;
+  left:0;
+  z-index: 1;
+  min-height:80px;
+  box-shadow: 0 0 30px 0 rgba(1,121,255,0.07), 0 0 30px 0 rgba(0,0,0,0.1);
+  &>nav{
+    &>ul{
+      display: inline-block;
+      list-style: none;
+      margin:0;
+      padding: 0;
+      &>li{
+        display: inline-block;
+        &>a{
+          color: @baseText;
+          text-decoration: none;
+        }
+      }
+    }
+    &>:local(.static) {
+      margin: 0;
+      font-size: 20px;
+      :local(.logo) {
+        font-size: 40px;
+        &>a{
+          color: @primaryColor;
+        }
+      }
+      &:last-child{
+        float: right;
+      }
+    }
+    &>:local(.links){
+      background-color: transparent;
+      &>:local(.item){
+        &>a{
+          display:inline-block;
+          padding: 10px 20px;
+        }
+      }
+    }
+  }
+
+  @media only screen and (max-width: 768px) {
+    & {
+      min-height: 90px;
+      & > nav {
+        & > :local(.static) {
+          :local(.logo) {
+            font-size: 30px;
+          }
+        }
+        &>:local(.links){
+
+          background-color: @baseShade;
+
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          width: 100%;
+        }
+      }
+    }
+  }
+
+}
