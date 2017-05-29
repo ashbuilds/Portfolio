@@ -16,8 +16,15 @@ class ItemList extends React.Component{
     }
 
 
-
+     componentDidMount(){
+         if(typeof window !== 'undefined'){
+             if(window.location.href.indexOf("propan.")){
+                 window.location.href="/propan"
+             }
+         }
+     }
      componentWillMount(){
+
         this.props.dispatch(getItems());
      }
 
