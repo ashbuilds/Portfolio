@@ -1,9 +1,12 @@
 version: "3"
 services:
-  portfolio:
+  portfolio-build:
     build: ./
     image: node:12.4.0-alpine
-    working_dir: /home/app
+    command: sh -c "yarn && yarn build"
+
+  portfolio:
+    image: nginx:1.16.0-alpine
     volumes:
       - ./nginx.conf:/etc/nginx/conf.d/default.conf
       - ./:/home/app
@@ -13,7 +16,7 @@ services:
       - VIRTUAL_HOST=ashishmishra.com,ash.bio,ash.cool,ashbuilds.dev,ashtag.dev,ashtag.me
       - LETSENCRYPT_HOST=ashishmishra.com,ash.bio,ash.cool,ashbuilds.dev,ashtag.dev,ashtag.me
       - LETSENCRYPT_EMAIL=ashish.mishra41191@gmail.com
-    command: sh -c "yarn && yarn build"
+
 networks:
   nginx-proxy:
     external: true
