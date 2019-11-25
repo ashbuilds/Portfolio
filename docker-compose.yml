@@ -4,7 +4,6 @@ services:
     build: ./
     image: node:12.4.0-alpine
     command: sh -c "yarn && yarn build"
-
   portfolio:
     image: nginx:1.16.0-alpine
     volumes:
@@ -16,6 +15,8 @@ services:
       - VIRTUAL_HOST=ashishmishra.com,ash.bio,ash.cool,ashbuilds.dev,ashtag.dev,ashtag.me
       - LETSENCRYPT_HOST=ashishmishra.com,ash.bio,ash.cool,ashbuilds.dev,ashtag.dev,ashtag.me
       - LETSENCRYPT_EMAIL=ashish.mishra41191@gmail.com
+    depends_on:
+      - portfolio-build
 
 networks:
   nginx-proxy:
