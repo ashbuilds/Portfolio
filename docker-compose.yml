@@ -16,8 +16,8 @@ services:
     networks:
       - nginx-proxy
     environment:
-      - VIRTUAL_HOST=ashishmishra.com,ash.bio
-      - LETSENCRYPT_HOST=ashishmishra.com,ash.bio
+      - VIRTUAL_HOST=ashishmishra.com,ash.bio,ash.cool,ashbuilds.dev,ashtag.dev,ashtag.me
+      - LETSENCRYPT_HOST=ashishmishra.com,ash.bio,ash.cool,ashbuilds.dev,ashtag.dev,ashtag.me
       - LETSENCRYPT_EMAIL=ashish.mishra41191@gmail.com
 #    depends_on:
 #      - portfolio-build
