@@ -2,6 +2,7 @@ version: "3"
 services:
   portfolio:
     image: node:12.4.0-alpine
+    working_dir: /home/app
     volumes:
       - ./nginx.conf:/etc/nginx/conf.d/default.conf
       - ./:/home/app
